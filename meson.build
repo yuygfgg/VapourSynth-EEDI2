@@ -1,5 +1,5 @@
 project('EEDI2', 'cpp',
-  default_options : ['buildtype=release', 'b_ndebug=if-release', 'cpp_std=c++14'],
+  default_options : ['buildtype=release', 'b_ndebug=if-release', 'cpp_std=c++14', 'b_lto=true'],
   meson_version : '>=0.48.0',
   version : '7'
 )
@@ -8,7 +8,7 @@ sources = 'EEDI2/EEDI2.cpp'
 
 vapoursynth_dep = dependency('vapoursynth').partial_dependency(compile_args : true, includes : true)
 
-add_project_arguments('-ffast-math', language : 'cpp')
+add_project_arguments('-Ofast', '-march=native', '-mllvm' ,'-polly', '-mllvm', '-polly-vectorizer=stripmine', '-mllvm', '-polly-tiling', '-Rpass=polly', '-Rpass-analysis=polly', language : 'cpp')
 
 if host_machine.cpu_family().startswith('x86')
   add_project_arguments('-mfpmath=sse', '-msse2', language : 'cpp')
